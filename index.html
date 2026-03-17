@@ -74,448 +74,537 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </head>
 
-<body class="fullcontent quarto-light">
+<body class="quarto-light">
 
 <div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
-
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#task-1" id="toc-task-1" class="nav-link" data-scroll-target="#task-1">Task 1</a>
+  <ul class="collapse">
+  <li><a href="#preparing-the-environment-for-task-1" id="toc-preparing-the-environment-for-task-1" class="nav-link" data-scroll-target="#preparing-the-environment-for-task-1">Preparing the Environment for Task 1</a></li>
+  <li><a href="#importing-the-geospatial-vector-data" id="toc-importing-the-geospatial-vector-data" class="nav-link" data-scroll-target="#importing-the-geospatial-vector-data">Importing the Geospatial Vector Data</a></li>
+  <li><a href="#filtering-for-forest-polygons" id="toc-filtering-for-forest-polygons" class="nav-link" data-scroll-target="#filtering-for-forest-polygons">Filtering for Forest Polygons</a></li>
+  <li><a href="#intersecting-forest-polygons-with-canton-boundaries" id="toc-intersecting-forest-polygons-with-canton-boundaries" class="nav-link" data-scroll-target="#intersecting-forest-polygons-with-canton-boundaries">Intersecting Forest Polygons with Canton Boundaries</a></li>
+  <li><a href="#computing-forest-area-per-polygon" id="toc-computing-forest-area-per-polygon" class="nav-link" data-scroll-target="#computing-forest-area-per-polygon">Computing Forest Area per Polygon</a></li>
+  <li><a href="#aggregating-forest-area-by-canton" id="toc-aggregating-forest-area-by-canton" class="nav-link" data-scroll-target="#aggregating-forest-area-by-canton">Aggregating Forest Area by Canton</a></li>
+  <li><a href="#joining-forest-totals-to-canton-polygons-and-computing-percentages" id="toc-joining-forest-totals-to-canton-polygons-and-computing-percentages" class="nav-link" data-scroll-target="#joining-forest-totals-to-canton-polygons-and-computing-percentages">Joining Forest Totals to Canton Polygons and Computing Percentages</a></li>
+  <li><a href="#creating-a-continuous-choropleth-map-of-forest-coverage" id="toc-creating-a-continuous-choropleth-map-of-forest-coverage" class="nav-link" data-scroll-target="#creating-a-continuous-choropleth-map-of-forest-coverage">Creating a Continuous Choropleth Map of Forest Coverage</a></li>
+  </ul></li>
+  <li><a href="#task-2" id="toc-task-2" class="nav-link" data-scroll-target="#task-2">Task 2</a>
+  <ul class="collapse">
+  <li><a href="#filtering-forest-polygons-using-gdal" id="toc-filtering-forest-polygons-using-gdal" class="nav-link" data-scroll-target="#filtering-forest-polygons-using-gdal">Filtering Forest Polygons Using GDAL</a></li>
+  <li><a href="#calculating-forest-area-and-percentages-per-canton" id="toc-calculating-forest-area-and-percentages-per-canton" class="nav-link" data-scroll-target="#calculating-forest-area-and-percentages-per-canton">Calculating Forest Area and Percentages per Canton</a></li>
+  <li><a href="#visualizing-the-results" id="toc-visualizing-the-results" class="nav-link" data-scroll-target="#visualizing-the-results">Visualizing the results</a></li>
+  <li><a href="#comparing-execution-times" id="toc-comparing-execution-times" class="nav-link" data-scroll-target="#comparing-execution-times">Comparing Execution Times</a></li>
+  </ul></li>
+  </ul>
+</nav>
+</div>
 <main class="content" id="quarto-document-content">
 
 
 
 
-<section id="solution-for-vector-deepdive" class="level1">
-<h1>Solution for Vector Deepdive</h1>
-<p>In this file I am going to present my solutions for the Vector Deepdive exercise.</p>
-<section id="task-1" class="level2">
-<h2 class="anchored" data-anchor-id="task-1">Task 1</h2>
-<p>Download the datasets swissTLM3D and swissboundaries3d from swisstopo. Using swissTLM3d and swissboundaries3d, calculate the percentage of area covered by forest per canton. Visualize the results (in a map and / or a plot).</p>
-<section id="setting-up-the-environment-for-the-forest-area-analysis" class="level3">
-<h3 class="anchored" data-anchor-id="setting-up-the-environment-for-the-forest-area-analysis">Setting Up the Environment for the Forest Area Analysis</h3>
-<p>In this first step, I prepare the R environment for a spatial analysis of forest areas in Switzerland.</p>
-<p>I begin by loading the required libraries. The sf package is used for working with spatial vector data (simple features), dplyr supports data manipulation and transformation, ggplot2 is used for visualization, and tictoc allows me to measure the runtime of the workflow.</p>
-<p>Next, I define the path to my geospatial data directory. This ensures that all datasets can be accessed consistently throughout the analysis without repeatedly specifying long file paths. The exact location is a technical detail; what matters is that the data folder is clearly defined at the beginning of the script.</p>
-<p>I then start a timer using tic(). This allows me to measure how long the complete forest area analysis takes to execute. At the end of the workflow, I will stop the timer and print the total runtime.</p>
-<p>Finally, I construct the file paths to the two key datasets:</p>
+<div style="display: flex; align-items: center; margin-bottom: 20px;">
+<img src="images/logo.png" style="width: 250px; margin-right: 20px;">
+<h1 style="margin: 0;">
+Solution for Raster Deepdive
+</h1>
+</div>
+<section id="introduction" class="level1">
+<h1>Introduction</h1>
+<p>In this file I am going to present my solutions for the Raster Deepdive exercise.</p>
+</section>
+<section id="task-1" class="level1">
+<h1>Task 1</h1>
+<ol type="1">
+<li>Redo Task 1 from Vector Deepdive (calculate the percentage of forest per canton). However, this time use the R package terra to to the processing.</li>
+<li>Again, use the R package tictoc to measure the execute time of each step in the process.</li>
+</ol>
+<section id="preparing-the-environment-for-task-1" class="level2">
+<h2 class="anchored" data-anchor-id="preparing-the-environment-for-task-1">Preparing the Environment for Task 1</h2>
+<p>In this first step, I set up the R environment for working with geospatial data.</p>
+<p>I begin by loading the necessary R packages:</p>
+<p><code>tidyverse</code> provides a suite of tools for data manipulation, cleaning, and visualization.</p>
+<p><code>terra</code> is used to handle spatial raster and vector data efficiently.</p>
+<p><code>tictoc</code> allows me to measure the runtime of the workflow, giving insight into the performance of my analysis.</p>
+<p>Next, I define the path to my geospatial data folder. By setting the GEODATA environment variable using Sys.setenv(), I ensure that all datasets can be accessed consistently without having to repeatedly type long file paths. This keeps the workflow cleaner and reduces the risk of errors caused by incorrect paths. Also like this I can save all the large geodata files in a cetral location and I do not need to copy them every time I start a new project.</p>
+<p>I then construct the full paths to the key geopackage files I will use in the analysis:</p>
 <ul>
-<li><strong>SWISSTLM3D</strong>, which contains detailed land cover information, including forest polygons.</li>
-<li><strong>swissBOUNDARIES3D</strong>, which contains administrative boundaries such as the Swiss cantons.</li>
+<li><p><em>SWISSTLM3D</em>, which contains detailed land cover information, including building footprints, roads, and natural features.</p></li>
+<li><p><em>swissBOUNDARIES3D</em>, which contains administrative boundaries such as the Swiss cantons.</p></li>
 </ul>
-<p>With this, the environment is fully prepared.</p>
+<p>Before diving into the data processing steps, I start a timer with tic(“Total workflow time”). This allows me to measure how long the entire workflow takes to execute. At the end of the workflow, I will stop the timer and see the total runtime.</p>
+<p>At this point, the R environment is fully prepared, the key datasets are referenced, and I am ready to begin the spatial data analysis workflow.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">'tidyverse'</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">'terra'</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">'tictoc'</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">'sf'</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">'ggplot2'</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Set path to geodata</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">Sys.setenv</span>(<span class="at">GEODATA =</span> <span class="st">"/home/rhoumyas/data/geodata"</span>)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Construct the path to geodata</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>swisstlm_path <span class="ot">&lt;-</span> <span class="fu">file.path</span>(<span class="fu">Sys.getenv</span>(<span class="st">"GEODATA"</span>), <span class="st">"SWISSTLM3D_2026_LV95_LN02.gpkg"</span>)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>swissbound_path <span class="ot">&lt;-</span> <span class="fu">file.path</span>(<span class="fu">Sys.getenv</span>(<span class="st">"GEODATA"</span>), <span class="st">"swissBOUNDARIES3D_1_5_LV95_LN02.gpkg"</span>)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Start the timer for the total workflow time</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="fu">tic</span>(<span class="st">"Total workflow time"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
 </section>
-<section id="reading-and-inspecting-the-spatial-data" class="level3">
-<h3 class="anchored" data-anchor-id="reading-and-inspecting-the-spatial-data">Reading and Inspecting the Spatial Data</h3>
-<p>In this step, I load the spatial datasets into R using the <strong>sf</strong> package. The <code>st_read()</code> function reads specific layers from the GeoPackage files.</p>
-<p>I import:</p>
+<section id="importing-the-geospatial-vector-data" class="level2">
+<h2 class="anchored" data-anchor-id="importing-the-geospatial-vector-data">Importing the Geospatial Vector Data</h2>
+<p>In this step, I begin by timing the data import process using <code>tic("Import data")</code>.</p>
+<p>Next, I load the key layers from the geopackage files using <code>vect()</code> from the <code>terra</code> package:</p>
 <ul>
-<li>The <strong>land cover dataset</strong>, which contains detailed information about different surface types (including forests).</li>
-<li>The <strong>canton boundaries dataset</strong>, which contains the administrative polygons for the Swiss cantons.</li>
+<li><p><strong><code>landcover</code></strong>: I read the <code>"tlm_bb_bodenbedeckung"</code> layer from the SWISSTLM3D geopackage. This layer contains detailed land cover information for Switzerland, such as forest, water, urban areas, and other surface types.</p></li>
+<li><p><strong><code>cantons</code></strong>: I read the <code>"tlm_kantonsgebiet"</code> layer from the swissBOUNDARIES3D geopackage. This layer provides the administrative boundaries of the Swiss cantons.</p></li>
 </ul>
-<p>Because GeoPackages can contain multiple layers, I explicitly specify the layer names to ensure, that I load the correct data.</p>
-<p>After loading the datasets, I inspect their structure by checking the column names. This is an important exploratory step: it allows me to identify relevant attributes, such as the variable that classifies land cover types (e.g., forest) and the variable that stores canton names.</p>
+<p>After importing the layers, I use <code>toc(log = TRUE)</code> to stop the timer and log the duration of the import step.</p>
+<p>At this point, both the land cover and canton layers are loaded into R as <code>SpatVector</code> objects, and I am ready to start the spatial analysis workflow.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Read layers</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>landcover <span class="ot">&lt;-</span> <span class="fu">st_read</span>(swisstlm_path, <span class="at">layer =</span> <span class="st">"tlm_bb_bodenbedeckung"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Start timer</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tic</span>(<span class="st">"Import data"</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Read layers</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>landcover <span class="ot">&lt;-</span> <span class="fu">vect</span>(swisstlm_path, <span class="at">layer =</span> <span class="st">"tlm_bb_bodenbedeckung"</span>)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>cantons <span class="ot">&lt;-</span> <span class="fu">vect</span>(swissbound_path, <span class="at">layer =</span> <span class="st">"tlm_kantonsgebiet"</span>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Log time</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="fu">toc</span>(<span class="at">log =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Reading layer `tlm_bb_bodenbedeckung' from data source 
-  `/home/rhoumyas/data/geodata/SWISSTLM3D_2026_LV95_LN02.gpkg' 
-  using driver `GPKG'
-Simple feature collection with 848065 features and 13 fields
-Geometry type: POLYGON
-Dimension:     XYZ
-Bounding box:  xmin: 2485369 ymin: 1064011 xmax: 2833867 ymax: 1297554
-z_range:       zmin: 192.853 zmax: 4601.29
-Projected CRS: CH1903+ / LV95</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>cantons <span class="ot">&lt;-</span> <span class="fu">st_read</span>(swissbound_path, <span class="at">layer =</span> <span class="st">"tlm_kantonsgebiet"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Reading layer `tlm_kantonsgebiet' from data source 
-  `/home/rhoumyas/data/geodata/swissBOUNDARIES3D_1_5_LV95_LN02.gpkg' 
-  using driver `GPKG'
-Simple feature collection with 26 features and 19 fields
-Geometry type: MULTIPOLYGON
-Dimension:     XYZ
-Bounding box:  xmin: 2485410 ymin: 1075268 xmax: 2833858 ymax: 1295934
-z_range:       zmin: 193.51 zmax: 4615.402
-Projected CRS: CH1903+ / LV95</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Inspect column names</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(landcover)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code> [1] "uuid"               "datum_aenderung"    "datum_erstellung"  
- [4] "erstellung_jahr"    "erstellung_monat"   "grund_aenderung"   
- [7] "herkunft"           "herkunft_jahr"      "herkunft_monat"    
-[10] "objektart"          "revision_jahr"      "revision_monat"    
-[13] "revision_qualitaet" "geom"              </code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(cantons)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code> [1] "uuid"               "datum_aenderung"    "datum_erstellung"  
- [4] "erstellung_jahr"    "erstellung_monat"   "grund_aenderung"   
- [7] "herkunft"           "herkunft_jahr"      "herkunft_monat"    
-[10] "revision_jahr"      "revision_monat"     "revision_qualitaet"
-[13] "objektart"          "kantonsnummer"      "see_flaeche"       
-[16] "kantonsflaeche"     "name"               "icc"               
-[19] "einwohnerzahl"      "geom"              </code></pre>
+<pre><code>Import data: 12.054 sec elapsed</code></pre>
 </div>
 </div>
 </section>
-<section id="extracting-forest-areas-and-assigning-them-to-cantons" class="level3">
-<h3 class="anchored" data-anchor-id="extracting-forest-areas-and-assigning-them-to-cantons">Extracting Forest Areas and Assigning Them to Cantons</h3>
-<p>In this step, I focus on isolating the forest areas from the full land cover dataset. Using a filtering operation, I select only those polygons that are classified as forest (“Wald”). This reduces the dataset to the features that are relevant for the analysis.</p>
-<p>Next, I perform a spatial intersection between the forest polygons and the canton boundaries. This operation overlays both datasets and splits the forest polygons along canton borders. As a result, each forest fragment is assigned to the canton in which it is located.</p>
+<section id="filtering-for-forest-polygons" class="level2">
+<h2 class="anchored" data-anchor-id="filtering-for-forest-polygons">Filtering for Forest Polygons</h2>
+<p>Now i filter out the forest areas from the broader land cover dataset. To measure how long this filtering step takes, I start a timer with <code>tic("Filter forest polygons")</code>.</p>
+<p>I then subset the <code>landcover</code> SpatVector by the attribute <code>objektart</code>, keeping only the polygons where <code>objektart == "Wald"</code>. This creates a new object called <code>forest</code>, which now contains only the areas classified as forest in Switzerland.</p>
+<p>Filtering the dataset in this way allows me to concentrate my analysis on forested regions, making subsequent spatial operations more efficient and relevant. By reducing the dataset to only the polygons of interest, I can speed up processing and avoid unnecessary computations later on.</p>
+<p>After completing the filtering, I call <code>toc(log = TRUE)</code> to stop the timer and log how long this step took.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Keep only forest polygons</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>forest <span class="ot">&lt;-</span> landcover <span class="sc">%&gt;%</span> <span class="fu">filter</span>(objektart <span class="sc">==</span> <span class="st">"Wald"</span>)</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Intersect forest with canton boundaries</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>forest_in_canton <span class="ot">&lt;-</span> <span class="fu">st_intersection</span>(forest, cantons)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Start timer</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tic</span>(<span class="st">"Filter forest polygons"</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Keep only forest polygons</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>forest <span class="ot">&lt;-</span> landcover[landcover<span class="sc">$</span>objektart <span class="sc">==</span> <span class="st">"Wald"</span>, ]</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Log time</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="fu">toc</span>(<span class="at">log =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Filter forest polygons: 2.577 sec elapsed</code></pre>
+</div>
 </div>
 </section>
-<section id="calculating-forest-area-per-canton" class="level3">
-<h3 class="anchored" data-anchor-id="calculating-forest-area-per-canton">Calculating Forest Area per Canton</h3>
-<p>In this step, I quantify the forest area and prepare the data for analysis and visualization.</p>
-<p>First, I calculate the area of each forest fragment resulting from the spatial intersection. Since the data are stored in a projected coordinate reference system (LV95), the area is returned in square meters. I convert these values to square kilometers for easier interpretation. After computing the area, I remove the forest geometry because I no longer need the individual forest polygons—only their numeric area values.</p>
-<p>Next, I aggregate the data by canton. By grouping the table according to the canton name, I sum all forest fragments within each canton. This results in a table containing one row per canton and the corresponding total forest area in square kilometers.</p>
-<p>Finally, I join these aggregated forest area values back to the canton polygons. This step enriches the canton dataset with a new variable representing total forest area. I then calculate two additional metrics:</p>
+<section id="intersecting-forest-polygons-with-canton-boundaries" class="level2">
+<h2 class="anchored" data-anchor-id="intersecting-forest-polygons-with-canton-boundaries">Intersecting Forest Polygons with Canton Boundaries</h2>
+<p>Now that I have isolated the forest polygons, the next step is to associate them with the administrative boundaries of Switzerland. To track how long this spatial operation takes, I start a timer using <code>tic("Intersect forest with cantons")</code>.</p>
+<p>I then use the <code>intersect()</code> function from the <strong>terra</strong> package to compute the spatial intersection between the <code>forest</code> polygons and the <code>cantons</code> layer. The result, stored in <code>forest_in_canton</code>, contains only the portions of forest polygons that fall within each canton, effectively splitting forest areas along canton borders.</p>
+<p>This step is important because it allows me to perform canton-level analyses, such as calculating the total forest area per canton. Without this intersection, forest areas that cross canton boundaries would be incorrectly assigned or aggregated.</p>
+<p>Finally, I stop the timer with <code>toc(log = TRUE)</code> and log the runtime.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Start timer</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tic</span>(<span class="st">"Intersect forest with cantons"</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Intersect forest with cantons</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>forest_in_canton <span class="ot">&lt;-</span> <span class="fu">intersect</span>(forest, cantons)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Log time</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="fu">toc</span>(<span class="at">log =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Intersect forest with cantons: 151.763 sec elapsed</code></pre>
+</div>
+</div>
+</section>
+<section id="computing-forest-area-per-polygon" class="level2">
+<h2 class="anchored" data-anchor-id="computing-forest-area-per-polygon">Computing Forest Area per Polygon</h2>
+<p>In this step, I quantify the size of each forest polygon within the cantons. To monitor performance, I start a timer using <code>tic("Compute forest area per polygon")</code>.</p>
+<p>I first convert the <code>forest_in_canton</code> SpatVector into a data frame using <code>as.data.frame()</code>. This allows me to work with the spatial attributes in a tabular format, which is useful for summarizing.</p>
+<p>Next, I calculate the area of each forest polygon using the <code>expanse()</code> function from <strong>terra</strong>, specifying <code>unit = "km"</code> to get the area in square kilometers. I store this value in a new column called <code>forest_area_km2</code>.</p>
+<p>At this point, the forest geometry is no longer needed for calculations, so the resulting <code>forest_table</code> contains all attribute information (like the canton it belongs to) plus the computed forest area, but no geometry, making it smaller and more efficient.</p>
+<p>Finally, I stop the timer with <code>toc(log = TRUE)</code> and log the runtime for this step.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Start timer</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tic</span>(<span class="st">"Compute forest area per polygon"</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute forest area (km2) and remove geometry for table</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>forest_table <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(forest_in_canton) <span class="sc">%&gt;%</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">forest_area_km2 =</span> <span class="fu">expanse</span>(forest_in_canton, <span class="at">unit =</span> <span class="st">"km"</span>)</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Log time</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="fu">toc</span>(<span class="at">log =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Compute forest area per polygon: 31.525 sec elapsed</code></pre>
+</div>
+</div>
+</section>
+<section id="aggregating-forest-area-by-canton" class="level2">
+<h2 class="anchored" data-anchor-id="aggregating-forest-area-by-canton">Aggregating Forest Area by Canton</h2>
+<p>Now that I have the forest area for each individual polygon, I want to summarize the total forest area for each canton. To track performance, I start a timer using <code>tic("Aggregate forest area by canton")</code>.</p>
+<p>I use the following workflow to perform this aggregation:</p>
 <ul>
-<li>The total area of each canton (in square kilometers), computed from the canton geometry.</li>
-<li>The percentage of each canton covered by forest, derived by dividing forest area by total canton area and multiplying by 100.</li>
+<li><code>group_by(name)</code> groups the data by the canton name. This ensures that all polygons belonging to the same canton are considered together.</li>
+<li><code>summarise(total_forest_area_km2 = sum(forest_area_km2, na.rm = TRUE))</code> calculates the total forest area per canton by summing the <code>forest_area_km2</code> column for each group. I include <code>na.rm = TRUE</code> to safely ignore any missing values.</li>
 </ul>
-<p>At this point, the canton dataset contains both the geometry and all relevant forest statistics, making it ready for mapping and further analysis.</p>
+<p>The result, <code>forest_area_per_canton</code>, is a clean table showing the total forest area in square kilometers for each canton.</p>
+<p>Finally, I stop the timer with <code>toc(log = TRUE)</code> to log how long the aggregation took.</p>
+<p>At this stage, I have successfully transformed the detailed polygon data into a canton-level summary of forest coverage, that I can now combine with the canton geometries to later create a map.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert forest area to km² and remove forest geometry</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>forest_table <span class="ot">&lt;-</span> forest_in_canton <span class="sc">%&gt;%</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">forest_area_km2 =</span> <span class="fu">as.numeric</span>(<span class="fu">st_area</span>(.)) <span class="sc">/</span> <span class="fl">1e6</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_set_geometry</span>(<span class="cn">NULL</span>)</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Sum forest area by canton</span></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>forest_area_per_canton <span class="ot">&lt;-</span> forest_table <span class="sc">%&gt;%</span></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(name) <span class="sc">%&gt;%</span></span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">total_forest_area_km2 =</span> <span class="fu">sum</span>(forest_area_km2, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Join to canton polygons</span></span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>cantons <span class="ot">&lt;-</span> cantons <span class="sc">%&gt;%</span></span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(forest_area_per_canton, <span class="at">by =</span> <span class="st">"name"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">canton_area_km2 =</span> <span class="fu">as.numeric</span>(<span class="fu">st_area</span>(.)) <span class="sc">/</span> <span class="fl">1e6</span>,</span>
-<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">forest_pct =</span> <span class="dv">100</span> <span class="sc">*</span> total_forest_area_km2 <span class="sc">/</span> canton_area_km2</span>
-<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</section>
-<section id="measuring-runtime" class="level3">
-<h3 class="anchored" data-anchor-id="measuring-runtime">Measuring Runtime</h3>
-<p>At this point, I stop the timer to measure how long the full data preparation and spatial processing took. The timing does not include the plotting steps, as the focus here is on evaluating the computational cost of the spatial operations (such as the intersection and area calculations).</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">toc</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Start timer</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tic</span>(<span class="st">"Aggregate forest area by canton"</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Sum forest area by canton</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>forest_area_per_canton <span class="ot">&lt;-</span> forest_table <span class="sc">%&gt;%</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(name) <span class="sc">%&gt;%</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">total_forest_area_km2 =</span> <span class="fu">sum</span>(forest_area_km2, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Log time</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="fu">toc</span>(<span class="at">log =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Forest fraction calculation task 1: 253.279 sec elapsed</code></pre>
+<pre><code>Aggregate forest area by canton: 0.016 sec elapsed</code></pre>
 </div>
 </div>
 </section>
-<section id="creating-a-binned-choropleth-map" class="level3">
-<h3 class="anchored" data-anchor-id="creating-a-binned-choropleth-map">Creating a Binned Choropleth Map</h3>
-<p>In this step, I create a choropleth map that visualizes the percentage of forest area per canton. Instead of using a continuous color scale, I deliberately apply a <strong>binned (classified) color scale</strong> using <code>scale_fill_stepsn()</code>.</p>
-<p>A continuous gradient can sometimes be difficult to interpret in choropleth maps because small differences in color intensity are hard to distinguish spatially. By using a <strong>binned approach</strong>, the values are grouped into clearly defined intervals. This makes it easier to visually compare cantons by class rather than by subtle tonal differences.</p>
-<p>The breaks define the class boundaries (e.g., 0–20%, 20–30%, etc.), and each class is represented by a distinct shade of green. The monochromatic green palette was chosen to align thematically with the concept of forest cover.</p>
-<p>In the next step, I create an additional horizontal bar chart that displays the <strong>exact percentage values</strong> for each canton. Because this second plot provides precise numerical information, the map does not need to maximize interpretational precision. Instead, I prioritize visual coherence and thematic clarity.</p>
-<p>If the bar chart were not included, I would likely choose a multi-color continuous scale to improve interpretability directly within the map. However, since the exact values are shown separately, I opted for a visually pleasant, thematically consistent green classification for the choropleth.</p>
+<section id="joining-forest-totals-to-canton-polygons-and-computing-percentages" class="level2">
+<h2 class="anchored" data-anchor-id="joining-forest-totals-to-canton-polygons-and-computing-percentages">Joining Forest Totals to Canton Polygons and Computing Percentages</h2>
+<p>In this step, I combine the summarized forest areas with the original canton polygons to enable further analysis and visualization. Again I start a timer using <code>tic("Join forest areas to cantons and compute pct")</code> to track how long this step takes.</p>
+<p>I begin by adding the total forest area per canton to the <code>cantons</code> SpatVector. I use <code>match()</code> to align the rows correctly. This ensures that each canton polygon receives the correct total forest area value.</p>
+<p>Next, I calculate the total area of each canton using <code>expanse(cantons, unit = "km")</code> and store it in a new column called <code>canton_area_km2</code>. Having both the canton area and the forest area allows me to compute the percentage of the canton covered by forest.</p>
+<p>This results in a column <code>forest_pct</code> indicating how much of each canton is forested.</p>
+<p>Finally, I stop the timer with <code>toc(log = TRUE)</code> to record the runtime for this step. I also stop the overall workflow timer with another <code>toc(log = TRUE)</code>, giving me the total execution time from start to finish.</p>
+<p>At this point, I have a fully processed that is ready for visualization.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(cantons) <span class="sc">+</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="fu">aes</span>(<span class="at">fill =</span> forest_pct), <span class="at">color =</span> <span class="st">"grey40"</span>, <span class="at">size =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_stepsn</span>(</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">colours =</span> <span class="fu">c</span>(</span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>      <span class="st">"white"</span>, <span class="st">"#74c476"</span>, <span class="st">"#238b45"</span>, <span class="st">"#00441b"</span>),</span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">20</span>, <span class="dv">30</span>, <span class="dv">40</span>),</span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">100</span>),</span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"20%"</span>, <span class="st">"30%"</span>, <span class="st">"40%"</span>),</span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="st">"Forest cover (%)"</span></span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>() <span class="sc">+</span></span>
-<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
-<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">"right"</span>,</span>
-<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">18</span>, <span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>)</span>
-<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Percentage of Canton Covered by Forest"</span></span>
-<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="index_files/figure-html/forest-map,%20fig-width-%207,%20fig-height-%207-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Start the timer</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tic</span>(<span class="st">"Join forest areas to cantons and compute pct"</span>)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Join totals back to canton polygons and compute percentage</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>cantons<span class="sc">$</span>total_forest_area_km2 <span class="ot">&lt;-</span> forest_area_per_canton<span class="sc">$</span>total_forest_area_km2[</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">match</span>(cantons<span class="sc">$</span>name, forest_area_per_canton<span class="sc">$</span>name)</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>cantons<span class="sc">$</span>canton_area_km2 <span class="ot">&lt;-</span> <span class="fu">expanse</span>(cantons, <span class="at">unit =</span> <span class="st">"km"</span>)</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>cantons<span class="sc">$</span>forest_pct <span class="ot">&lt;-</span> <span class="dv">100</span> <span class="sc">*</span> cantons<span class="sc">$</span>total_forest_area_km2 <span class="sc">/</span> cantons<span class="sc">$</span>canton_area_km2</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Log time</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="fu">toc</span>(<span class="at">log =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Join forest areas to cantons and compute pct: 0.377 sec elapsed</code></pre>
 </div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Total workflow time</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">toc</span>(<span class="at">log =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Total workflow time: 198.597 sec elapsed</code></pre>
 </div>
 </div>
 </section>
-<section id="creating-a-horizontal-bar-chart-of-forest-cover" class="level3">
-<h3 class="anchored" data-anchor-id="creating-a-horizontal-bar-chart-of-forest-cover">Creating a Horizontal Bar Chart of Forest Cover</h3>
-<p>In this step, I create a horizontal bar chart to display the exact percentage of forest area per canton.</p>
-<p>First, I remove the geometry from the canton dataset, since a bar chart only requires attribute data. I then select the relevant variables (canton name and forest percentage) and sort the data by forest cover. Ordering the data ensures that the bars are displayed in a meaningful sequence, which improves readability and comparison.</p>
-<p>I chose a horizontal bar chart because it is generally recommended when working with longer category labels. Canton names can take up considerable space, and horizontal orientation prevents label overlap while keeping the layout clean and legible.</p>
-<p>To make the values easy to compare, I directly annotate each bar with its percentage. By placing the numeric labels inside the bars, readers can immediately see the exact values without needing to estimate them from an axis scale. Because of this direct annotation, the x-axis numbers would only provide redundant information and potentially clutter the visualization. Therefore, I remove the x-axis labels and ticks.</p>
-<p>I also omit axis titles, as the plot title clearly communicates what is being shown, and the values inside the bars make the unit of measurement obvious. The result is a clean and focused visualization that complements the choropleth map by providing precise numerical detail.</p>
+<section id="creating-a-continuous-choropleth-map-of-forest-coverage" class="level2">
+<h2 class="anchored" data-anchor-id="creating-a-continuous-choropleth-map-of-forest-coverage">Creating a Continuous Choropleth Map of Forest Coverage</h2>
+<p>Last time, I created a bar chart below my map and used a binned choropleth approach, to show forest percentages by canton. This allowed readers to read exact values easily from the bar chart, while the map provided a spatial overview.</p>
+<p>For this workflow, I wanted to experiment with a continuous choropleth map to visualize the same data without the bar chart. My goal was to show why I previously decided on the bar chart + map combination: while a continuous choropleth looks visually appealing, it can be harder to extract exact numeric values directly from the map. In contrast, the bar chart clearly communicates the precise percentages, complementing the map’s spatial context.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>bar_data <span class="ot">&lt;-</span> cantons <span class="sc">%&gt;%</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_set_geometry</span>(<span class="cn">NULL</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(name, forest_pct) <span class="sc">%&gt;%</span></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(forest_pct)</span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot</span></span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(bar_data, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(name, forest_pct), <span class="at">y =</span> forest_pct)) <span class="sc">+</span></span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">fill =</span> <span class="st">"darkgreen"</span>) <span class="sc">+</span></span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">paste0</span>(<span class="fu">round</span>(forest_pct, <span class="dv">1</span>), <span class="st">"%"</span>)), </span>
-<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>            <span class="at">hjust =</span> <span class="fl">1.05</span>, <span class="at">color =</span> <span class="st">"white"</span>, <span class="at">size =</span> <span class="fl">3.5</span>) <span class="sc">+</span>  <span class="co"># labels inside bars</span></span>
-<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
-<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">""</span>, <span class="at">y =</span> <span class="st">""</span>, <span class="at">title =</span> <span class="st">"Percentage of Forest Area per Canton"</span>) <span class="sc">+</span></span>
-<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
-<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.x =</span> <span class="fu">element_blank</span>(),  <span class="co"># remove bottom axis numbers</span></span>
-<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.ticks.x =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">14</span>, <span class="at">margin =</span> <span class="fu">margin</span>(<span class="at">r =</span> <span class="dv">5</span>)),  <span class="co"># larger canton names, closer to bars</span></span>
-<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">18</span>, <span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">vjust =</span> <span class="fl">0.1</span>)  <span class="co"># bigger, centered title</span></span>
-<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert SpatVector to sf</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>cantons_sf <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_as_sf</span>(cantons)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot with continuous colors</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(cantons_sf) <span class="sc">+</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="fu">aes</span>(<span class="at">fill =</span> forest_pct), <span class="at">color =</span> <span class="st">"grey40"</span>, <span class="at">size =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_gradient</span>(<span class="at">low =</span> <span class="st">"white"</span>, <span class="at">high =</span> <span class="st">"#238b45"</span>, <span class="at">name =</span> <span class="st">"Forest %"</span>) <span class="sc">+</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>() <span class="sc">+</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Percentage of Canton Covered by Forest"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="index_files/figure-html/forest-barchart,%20fig-width-%208,%20fig-height-%206-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="index_files/figure-html/create%20choropleth-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 </section>
 </section>
-<section id="task-2" class="level2">
-<h2 class="anchored" data-anchor-id="task-2">Task 2</h2>
-<p>We have prepared a duckdb database on moodle (wald-kantone.duckdb). This database contains two layers: The forest data from swissTLM3D and the canton boundaries from swissBOUNDARIES3D.</p>
-<p>Use this dataset and with the help of DuckDB in practice, recreate Task 1 and measure the execution time using the R package tictoc.</p>
-<p>Compare the execution time with Task 1. Discuss!</p>
-<section id="setting-up-the-database-connection" class="level3">
-<h3 class="anchored" data-anchor-id="setting-up-the-database-connection">Setting Up the Database Connection</h3>
-<p>In this step, I connect to the provided DuckDB database (wald-kantone.duckdb), where the forest (wald) and canton (kantone) data is stored. I also load the spatial extension so I can perform geometric operations like intersections and area calculations. With this, the database is ready for analysis.</p>
+<section id="task-2" class="level1">
+<h1>Task 2</h1>
+<ol type="1">
+<li>Redo Task 1 from Vector Deepdive. However, this time use gdal from the command line to the processing. Note that you can use bash commands in quarto, you just have to set the language to {bash} in the code chunk and the engine to knitr in the YAML header</li>
+<li>Again, use the R package tictoc to measure the execute time of each step in the process. To measure the execution time of bash commands, you can use the approach shown below (which is a bit of a workaround since tictoc was made for R, not Bash commands)</li>
+<li>Compare the execution times of all approaches (sf, duckdb, terra, gdal). How do they differ?</li>
+</ol>
+<section id="filtering-forest-polygons-using-gdal" class="level2">
+<h2 class="anchored" data-anchor-id="filtering-forest-polygons-using-gdal">Filtering Forest Polygons Using GDAL</h2>
+<p>For the second task, I switch from R to GDAL tools in Bash to perform spatial data processing directly on the geopackages. GDAL should be very efficient for these kinds of operations, especially with large datasets.</p>
+<p>Before executing the Bash commands, I start a timer in R using <code>tic()</code>:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(duckdb)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Loading required package: DBI</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Start total workflow timer</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tic</span>(<span class="st">"GDAL: Total workflow time"</span>)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Start the process step timer</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="fu">tic</span>(<span class="st">"GDAL: Filter forest polygons"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>con <span class="ot">&lt;-</span> <span class="fu">dbConnect</span>(</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">duckdb</span>(),</span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">dbdir=</span><span class="st">"wald-kantone.duckdb"</span>,</span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">read_only =</span> <span class="cn">FALSE</span></span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="fu">dbExecute</span>(con, <span class="st">"INSTALL spatial;"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0</code></pre>
+<p>I use <code>ogr2ogr</code> to filter the SWISSTLM3D <em>bodenbedeckung</em> layer and write only the forest polygons to a new geopackage:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="ex">ogr2ogr</span> <span class="dt">\</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">-where</span> <span class="st">"objektart = 'Wald'"</span> <span class="dt">\</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">-nln</span> forest <span class="dt">\</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  forest.gpkg <span class="dt">\</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  <span class="va">$GEODATA</span>/SWISSTLM3D_2026_LV95_LN02.gpkg <span class="dt">\</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>  tlm_bb_bodenbedeckung</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dbExecute</span>(con, <span class="st">"LOAD spatial;"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Here’s what each option does:</p>
+<ul>
+<li><code>-where "objektart = 'Wald'"</code>: filters the layer so only polygons with <code>objektart = 'Wald'</code> are written. This is analogous to the <code>landcover[landcover$objektart == "Wald", ]</code> step in R.</li>
+<li><code>-nln forest</code>: sets the new layer name in the output geopackage to <code>forest</code>.</li>
+<li><code>forest.gpkg</code>: the output file that will contain only forest polygons.</li>
+<li><code>$GEODATA/SWISSTLM3D_2026_LV95_LN02.gpkg</code>: the input geopackage, using the system environment variable <code>$GEODATA</code> I set on my Linux machine.</li>
+<li><code>tlm_bb_bodenbedeckung</code>: specifies the layer in the input file to read.</li>
+</ul>
+<p>One important difference from R: in GDAL I cannot store interim results in memory like we did with <code>SpatVector</code> objects. I need to save filtered datasets to disk, so creating a single GeoPackage containing all the relevant geometries in one location (<code>forest.gpkg</code>) makes later calculations and workflow management much easier.</p>
+<p>Next, I append the canton boundaries to the same geopackage, creating a combined dataset:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="ex">ogr2ogr</span> <span class="dt">\</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">-f</span> GPKG <span class="dt">\</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">-update</span> <span class="dt">\</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">-nln</span> cantons <span class="dt">\</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  <span class="va">$PWD</span>/forest.gpkg <span class="dt">\</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>  <span class="va">$GEODATA</span>/swissBOUNDARIES3D_1_5_LV95_LN02.gpkg <span class="dt">\</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>  tlm_kantonsgebiet</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ul>
+<li><code>-f GPKG</code>: sets the output format to GeoPackage.</li>
+<li><code>-update</code>: tells GDAL to update the existing geopackage (<code>forest.gpkg</code>) rather than creating a new file.</li>
+<li><code>-nln cantons</code>: sets the layer name for the canton boundaries.</li>
+<li><code>$PWD/forest.gpkg</code>: ensures the output is the existing geopackage in the current working directory.</li>
+<li><code>$GEODATA/swissBOUNDARIES3D_1_5_LV95_LN02.gpkg</code>: input geopackage with canton polygons.</li>
+<li><code>tlm_kantonsgebiet</code>: specifies the layer in the input file to read.</li>
+</ul>
+<p>At this stage, <code>forest.gpkg</code> now contains two layers:</p>
+<ol type="1">
+<li><code>forest</code>: filtered forest polygons</li>
+<li><code>cantons</code>: canton boundaries</li>
+</ol>
+<p>Finally, I stop the timer in R to log how long the Bash commands took:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Log time</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">toc</span>(<span class="at">log =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0</code></pre>
+<pre><code>GDAL: Filter forest polygons: 4.445 sec elapsed</code></pre>
 </div>
 </div>
 </section>
-<section id="measuring-the-forest-area-per-canton" class="level3">
-<h3 class="anchored" data-anchor-id="measuring-the-forest-area-per-canton">Measuring the Forest Area per Canton</h3>
-<p>I start a timer to measure how long the forest area calculation takes. Then, I compute the area of forest within each canton and store the result as a view in the database. This step performs the spatial join between forests and cantons and aggregates the forest area by canton.</p>
+<section id="calculating-forest-area-and-percentages-per-canton" class="level2">
+<h2 class="anchored" data-anchor-id="calculating-forest-area-and-percentages-per-canton">Calculating Forest Area and Percentages per Canton</h2>
+<p>In this step, I perform the main spatial analysis directly in GDAL by computing the total forest area for each canton and the percentage of each canton covered by forest. Since I cannot hold large intermediate datasets in memory with GDAL, I use a GeoPackage and SQL queries via the SQLite dialect.</p>
+<p>I start a timer:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Start timing</span></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tic</span>(<span class="st">"Forest fraction calculation task 2"</span>)  </span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute forest area per canton</span></span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="fu">dbExecute</span>(con, <span class="st">"</span></span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="st">CREATE OR REPLACE VIEW forest_area_per_canton AS</span></span>
-<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="st">SELECT</span></span>
-<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a><span class="st">    k.name AS canton_name,</span></span>
-<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a><span class="st">    SUM(ST_Area(ST_Intersection(w.geom, k.geom))) AS forest_area</span></span>
-<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a><span class="st">FROM wald w</span></span>
-<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a><span class="st">JOIN kantone k</span></span>
-<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a><span class="st">ON ST_Intersects(w.geom, k.geom)</span></span>
-<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a><span class="st">GROUP BY k.name;</span></span>
-<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a><span class="st">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tic</span>(<span class="st">'GDAL: Calculating area and pct'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Then I run the following command:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="ex">ogr2ogr</span> <span class="dt">\</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">-f</span> GPKG <span class="dt">\</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">-dialect</span> SQLite <span class="dt">\</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">-sql</span> <span class="st">"</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="st">    SELECT</span></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="st">        c.name AS canton,</span></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a><span class="st">        c.geom,</span></span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a><span class="st">        SUM(ST_Area(ST_Intersection(f.geom, c.geom))) / 1e6 AS forest_area_km2,</span></span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a><span class="st">        ST_Area(c.geom) / 1e6 AS canton_area_km2,</span></span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a><span class="st">        (SUM(ST_Area(ST_Intersection(f.geom, c.geom))) / ST_Area(c.geom)) * 100 AS forest_pct</span></span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a><span class="st">    FROM cantons AS c</span></span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a><span class="st">    LEFT JOIN forest AS f</span></span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a><span class="st">        ON ST_Intersects(f.geom, c.geom)</span></span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a><span class="st">    GROUP BY c.name</span></span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a><span class="st">  "</span> <span class="dt">\</span></span>
+<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a>  <span class="va">$PWD</span>/cantons_forest.gpkg <span class="dt">\</span></span>
+<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a>  <span class="va">$PWD</span>/forest.gpkg <span class="dt">\</span></span>
+<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">-nln</span> cantons_forest</span>
+<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a>  </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Here’s what each part does:</p>
+<ul>
+<li><p><code>-f GPKG</code>: specifies that the output format is a GeoPackage.</p></li>
+<li><p><code>-dialect SQLite</code>: tells GDAL to interpret the SQL using SQLite spatial functions (<code>ST_Intersection</code>, <code>ST_Area</code>, etc.).</p></li>
+<li><p><code>-sql "..."</code>: the SQL query performs all calculations in one step:</p>
+<ul>
+<li><code>c.name AS canton</code>: keeps the canton name.</li>
+<li><code>c.geom</code>: retains the geometry of each canton.</li>
+<li><code>SUM(ST_Area(ST_Intersection(f.geom, c.geom))) / 1e6 AS forest_area_km2</code> → computes the total forest area in km² for each canton by intersecting forest polygons with the canton geometry.</li>
+<li><code>ST_Area(c.geom) / 1e6 AS canton_area_km2</code>: calculates the total area of each canton in km².</li>
+<li><code>(SUM(ST_Area(ST_Intersection(f.geom, c.geom))) / ST_Area(c.geom)) * 100 AS forest_pct</code>: computes the percentage of the canton covered by forest.</li>
+<li><code>LEFT JOIN forest AS f ON ST_Intersects(f.geom, c.geom)</code>: joins the forest polygons to each canton polygon where they intersect.</li>
+<li><code>GROUP BY c.name</code>: aggregates the results per canton, so each row represents one canton.</li>
+</ul></li>
+<li><p><code>$PWD/cantons_forest.gpkg</code>: the output GeoPackage storing the summary results.</p></li>
+<li><p><code>$PWD/forest.gpkg</code>: the input GeoPackage containing both forest and canton layers.</p></li>
+<li><p><code>-nln cantons_forest</code>: names the new layer in the output GeoPackage as <code>cantons_forest</code>.</p></li>
+</ul>
+<p>By using GDAL + SQLite in this way, I avoid keeping intermediate layers in memory. Everything is written to disk in the GeoPackage.</p>
+<p>Finally, I stop the timer in R:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Log process time</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">toc</span>(<span class="at">log =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0</code></pre>
+<pre><code>GDAL: Calculating area and pct: 531.241 sec elapsed</code></pre>
 </div>
-</div>
-</section>
-<section id="calculating-forest-fraction" class="level3">
-<h3 class="anchored" data-anchor-id="calculating-forest-fraction">Calculating Forest Fraction</h3>
-<p>Next, I calculate the fraction of each canton that is covered by forest. I join the forest area with the canton polygons, compute each canton’s total area, and calculate the forest fraction as a percentage. The results are stored in a new view and ordered by the highest forest coverage.</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute fraction of canton area covered by forest</span></span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dbExecute</span>(con, <span class="st">"</span></span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="st">CREATE OR REPLACE VIEW canton_forest_fraction AS</span></span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="st">SELECT</span></span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="st">    k.name AS canton_name,</span></span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="st">    f.forest_area,</span></span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="st">    ST_Area(k.geom) AS canton_area,</span></span>
-<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a><span class="st">    f.forest_area / ST_Area(k.geom) *100 AS forest_fraction</span></span>
-<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a><span class="st">FROM kantone k</span></span>
-<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a><span class="st">LEFT JOIN forest_area_per_canton f</span></span>
-<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a><span class="st">ON k.name = f.canton_name</span></span>
-<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a><span class="st">ORDER BY forest_fraction DESC;</span></span>
-<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a><span class="st">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Log total workflow time:</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">toc</span>(<span class="at">log =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0</code></pre>
+<pre><code>GDAL: Total workflow time: 535.696 sec elapsed</code></pre>
 </div>
 </div>
+<p>At this point, <code>cantons_forest.gpkg</code> contains a fully processed summary layer:</p>
+<ul>
+<li>Geometry of each canton</li>
+<li>Total forest area per canton (<code>forest_area_km2</code>)</li>
+<li>Total canton area (<code>canton_area_km2</code>)</li>
+<li>Forest coverage percentage (<code>forest_pct</code>)</li>
+</ul>
+<p>This completes the entire GDAL workflow, producing the same results as the R-based workflow.</p>
 </section>
-<section id="stopping-the-timer" class="level3">
-<h3 class="anchored" data-anchor-id="stopping-the-timer">Stopping the Timer</h3>
+<section id="visualizing-the-results" class="level2">
+<h2 class="anchored" data-anchor-id="visualizing-the-results">Visualizing the results</h2>
+<p>I wanted to check the results of the GDAL workflow, but I found a standard choropleth map a bit boring. Instead, I decided to recreate the tile map style used by SRF (the Swiss Broadcasting Company) for displaying election and vote results on their homepage.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/srf_tilemap.png" class="img-fluid figure-img"></p>
+<figcaption><a href="https://www.srf.ch/news/schweiz/abstimmungen-8-3-2026-1">SRF</a></figcaption>
+</figure>
+</div>
+<p>The tile map shows each canton as a square in a fixed grid, colored according to the percentage of forest coverage. This layout makes it easy to compare values across cantons at a glance, while still giving a sense of their relative size and position.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">toc</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Forest fraction calculation task 2: 0.035 sec elapsed</code></pre>
-</div>
-</div>
-<p>After the heavy computation is complete, I stop the timer to see how long the forest fraction calculation took. Compared to when I did the same exercise in R using the sf package (see above), the DuckDB approach is significantly faster.</p>
-<p>With sf, performing the spatial intersections and area calculations directly in R required loading all geometries into memory and computing each intersection in R, which quickly became slow for large datasets. In contrast, DuckDB handles the spatial join and aggregation inside the database engine. As a result, the same calculation completes much more efficiently, even on a standard laptop, while the sf workflow can take several minutes or longer for large datasets.</p>
-<p>This shows the advantage of doing spatial operations in a database: I can process large amounts of data without transferring all geometries into R, saving both memory and computation time.</p>
-</section>
-<section id="inspecting-the-results" class="level3">
-<h3 class="anchored" data-anchor-id="inspecting-the-results">Inspecting the Results</h3>
-<p>Finally, I inspect the first few rows of the forest fraction results to see the cantons with the highest forest coverage. This allows me to quickly verify that the calculations make sense.</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Inspect result</span></span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dbGetQuery</span>(con, <span class="st">"SELECT * FROM canton_forest_fraction;"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>              canton_name forest_area canton_area forest_fraction
-1                  Ticino  1194883931  2812155567        42.48997
-2            Schaffhausen   125433609   298418432        42.03280
-3               Solothurn   319913970   790456244        40.47207
-4                    Jura   334244794   838512165        39.86165
-5        Basel-Landschaft   202524572   517668761        39.12242
-6                Obwalden   174175234   490583307        35.50370
-7                  Aargau   489877996  1403798009        34.89662
-8               Neuchâtel   274288117   802165174        34.19347
-9  Appenzell Ausserrhoden    76630041   242836488        31.55623
-10              Nidwalden    83545339   275845122        30.28705
-11                 Schwyz   270867177   907882151        29.83506
-12                   Vaud   944974599  3212016742        29.41998
-13                 Zürich   503369756  1728941724        29.11433
-14                   Bern  1667241901  5958504819        27.98088
-15  Appenzell Innerrhoden    47223210   172476022        27.37958
-16                 Luzern   406495581  1493517344        27.21733
-17             St. Gallen   536656166  2028199748        26.45973
-18                    Zug    62366121   238732633        26.12384
-19               Fribourg   417715301  1672427799        24.97658
-20                 Glarus   166199659   685314332        24.25160
-21             Graubünden  1614791500  7105296294        22.72659
-22                Thurgau   199547265   994329312        20.06853
-23                 Valais  1039721966  5224635588        19.90037
-24                    Uri   154092586  1076534778        14.31376
-25            Basel-Stadt     4676370    36953764        12.65465
-26                 Genève    32900992   282487196        11.64690</code></pre>
-</div>
-</div>
-</section>
-<section id="disconnecting-from-the-database" class="level3">
-<h3 class="anchored" data-anchor-id="disconnecting-from-the-database">Disconnecting from the Database</h3>
-<p>Once I have completed the analysis and inspected the results, I disconnect from the DuckDB database. This closes the connection and ensures that all resources are properly released. Shutting down the database also guarantees that any temporary tables or views are cleared from memory.</p>
-<p>Disconnecting is a good habit to prevent leaving open connections, especially when working with large datasets or multiple projects, if you do not do this, you might run into errors later.</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Disconnect</span></span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dbDisconnect</span>(con, <span class="at">shutdown =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</section>
-</section>
-<section id="task-3" class="level2">
-<h2 class="anchored" data-anchor-id="task-3">Task 3</h2>
-<p>Without consulting external help, try and specify the DE-9IM string for the queen and bishop’s case as shown in Figure 1.</p>
-<p>Concentrate on the boundary-boundary intersection. Note:</p>
-<p>No intersection: F Point intersection: 0 Line intersetion: 1 Any intersection: * The 3x3 “chessboard” is available on moodle.</p>
-<section id="loading-the-chessboard-dataset" class="level3">
-<h3 class="anchored" data-anchor-id="loading-the-chessboard-dataset">Loading the chessboard Dataset</h3>
-<p>First I downloaded the file from moodle. Then I loaded the .gpkg file into r. I had to assign a dummy CRS, so i could perform a spatial analysis later.</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Read the original and destination grids</span></span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>grid_orig <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"chessboard.gpkg"</span>, <span class="at">layer =</span> <span class="st">"grid_orig"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Reading layer `grid_orig' from data source 
-  `/home/rhoumyas/Documents/ADLS/HS26/spatio-temp-ds/vector-deepdive/chessboard.gpkg' 
-  using driver `GPKG'
-Simple feature collection with 1 feature and 0 fields
-Geometry type: POLYGON
-Dimension:     XY
-Bounding box:  xmin: 0.3333333 ymin: 0.3333333 xmax: 0.6666667 ymax: 0.6666667
-Projected CRS: Undefined Cartesian SRS with unknown unit</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>grid_dest <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"chessboard.gpkg"</span>, <span class="at">layer =</span> <span class="st">"grid_dest"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Reading layer `grid_dest' from data source 
-  `/home/rhoumyas/Documents/ADLS/HS26/spatio-temp-ds/vector-deepdive/chessboard.gpkg' 
-  using driver `GPKG'
-Simple feature collection with 8 features and 0 fields
-Geometry type: POLYGON
-Dimension:     XY
-Bounding box:  xmin: 0 ymin: 0 xmax: 1 ymax: 1
-Projected CRS: Undefined Cartesian SRS with unknown unit</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Assign a dummy CRS (same for both layers)</span></span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="fu">st_crs</span>(grid_orig) <span class="ot">&lt;-</span> <span class="dv">2056</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: st_crs&lt;- : replacing crs does not reproject data; use st_transform for
-that</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">st_crs</span>(grid_dest) <span class="ot">&lt;-</span> <span class="dv">2056</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: st_crs&lt;- : replacing crs does not reproject data; use st_transform for
-that</code></pre>
-</div>
-</div>
-</section>
-<section id="the-kingqueen-case" class="level3">
-<h3 class="anchored" data-anchor-id="the-kingqueen-case">The King/Queen case</h3>
-<p>The king or queen on a chessboard can move in any direction from a starting square. therefore, I needed a way to select all squares that touch a given square, including both orthogonal (edge-sharing) and diagonal (corner-sharing) neighbors. In DE-9IM, the eighth position of the 9-character pattern corresponds to the intersection between the exterior of the first polygon and the boundary of the second polygon. By setting this position to 1, I specifically capture all polygons whose boundaries touch the exterior of the center square. For this task this resulted in the following string: <strong><code>F******1*</code></strong>.</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define a rook adjacency function</span></span>
-<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>st_queen_king <span class="ot">&lt;-</span> <span class="cf">function</span>(x, y) <span class="fu">st_relate</span>(x, y, <span class="at">pattern =</span> <span class="st">"F******1*"</span>)</span>
-<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Select neighbor polygons and sample points (hexagonal)</span></span>
-<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>grid_qk <span class="ot">&lt;-</span> grid_dest[grid_orig, , op <span class="ot">=</span> st_queen_king] <span class="sc">|&gt;</span> </span>
-<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_sample</span>(<span class="dv">1000</span>, <span class="at">type =</span> <span class="st">"hexagonal"</span>, <span class="at">by_polygon =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the destination grid and the sampled points</span></span>
-<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
-<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> grid_dest, <span class="at">fill =</span> <span class="st">"green"</span>, <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
-<span id="cb38-11"><a href="#cb38-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> grid_qk, <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">size =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
-<span id="cb38-12"><a href="#cb38-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> grid_orig, <span class="at">fill =</span> <span class="st">"purple"</span>)<span class="sc">+</span></span>
-<span id="cb38-13"><a href="#cb38-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"3x3 Chessboard Grid with Sampled Points"</span>) <span class="sc">+</span></span>
-<span id="cb38-14"><a href="#cb38-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>cantons_forest <span class="ot">&lt;-</span> <span class="fu">vect</span>(<span class="st">"cantons_forest.gpkg"</span> , <span class="at">layer =</span> <span class="st">'cantons_forest'</span>)</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="do">## Warning: [vect] Z coordinates ignored</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Canton codes in your 6x8 layout</span></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>grid_codes <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"0"</span>,<span class="st">"0"</span>,<span class="st">"0"</span>,<span class="st">"BS"</span>,<span class="st">"0"</span>,<span class="st">"SH"</span>,<span class="st">"0"</span>,<span class="st">"0"</span>,</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">"0"</span>,<span class="st">"0"</span>,<span class="st">"JU"</span>,<span class="st">"BL"</span>,<span class="st">"AG"</span>,<span class="st">"ZH"</span>,<span class="st">"TG"</span>,<span class="st">"AR"</span>,</span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">"0"</span>,<span class="st">"0"</span>,<span class="st">"NE"</span>,<span class="st">"SO"</span>,<span class="st">"LU"</span>,<span class="st">"ZG"</span>,<span class="st">"SG"</span>,<span class="st">"AI"</span>,</span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>  <span class="st">"0"</span>,<span class="st">"VD"</span>,<span class="st">"FR"</span>,<span class="st">"BE"</span>,<span class="st">"NW"</span>,<span class="st">"SZ"</span>,<span class="st">"GL"</span>,<span class="st">"GR"</span>,</span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>  <span class="st">"GE"</span>,<span class="st">"0"</span>,<span class="st">"VS"</span>,<span class="st">"0"</span>,<span class="st">"OW"</span>,<span class="st">"UR"</span>,<span class="st">"0"</span>,<span class="st">"0"</span>,</span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>  <span class="st">"0"</span>,<span class="st">"0"</span>,<span class="st">"0"</span>,<span class="st">"0"</span>,<span class="st">"0"</span>,<span class="st">"TI"</span>,<span class="st">"0"</span>,<span class="st">"0"</span></span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>), <span class="at">nrow =</span> <span class="dv">6</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a>nrow_grid <span class="ot">&lt;-</span> <span class="fu">nrow</span>(grid_codes)</span>
+<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a>ncol_grid <span class="ot">&lt;-</span> <span class="fu">ncol</span>(grid_codes)</span>
+<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-17"><a href="#cb28-17" aria-hidden="true" tabindex="-1"></a>code_lookup <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb28-18"><a href="#cb28-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">BS =</span> <span class="st">"Basel-Stadt"</span>, <span class="at">SH =</span> <span class="st">"Schaffhausen"</span>, <span class="at">JU =</span> <span class="st">"Jura"</span>,</span>
+<span id="cb28-19"><a href="#cb28-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">BL =</span> <span class="st">"Basel-Landschaft"</span>, <span class="at">AG =</span> <span class="st">"Aargau"</span>, <span class="at">ZH =</span> <span class="st">"Zürich"</span>,</span>
+<span id="cb28-20"><a href="#cb28-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">TG =</span> <span class="st">"Thurgau"</span>, <span class="at">AR =</span> <span class="st">"Appenzell Ausserrhoden"</span>, <span class="at">NE =</span> <span class="st">"Neuchâtel"</span>,</span>
+<span id="cb28-21"><a href="#cb28-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">SO =</span> <span class="st">"Solothurn"</span>, <span class="at">LU =</span> <span class="st">"Luzern"</span>, <span class="at">ZG =</span> <span class="st">"Zug"</span>,</span>
+<span id="cb28-22"><a href="#cb28-22" aria-hidden="true" tabindex="-1"></a>  <span class="at">SG =</span> <span class="st">"St. Gallen"</span>, <span class="at">AI =</span> <span class="st">"Appenzell Innerrhoden"</span>, <span class="at">VD =</span> <span class="st">"Vaud"</span>,</span>
+<span id="cb28-23"><a href="#cb28-23" aria-hidden="true" tabindex="-1"></a>  <span class="at">FR =</span> <span class="st">"Fribourg"</span>, <span class="at">BE =</span> <span class="st">"Bern"</span>, <span class="at">NW =</span> <span class="st">"Nidwalden"</span>,</span>
+<span id="cb28-24"><a href="#cb28-24" aria-hidden="true" tabindex="-1"></a>  <span class="at">SZ =</span> <span class="st">"Schwyz"</span>, <span class="at">GL =</span> <span class="st">"Glarus"</span>, <span class="at">GR =</span> <span class="st">"Graubünden"</span>,</span>
+<span id="cb28-25"><a href="#cb28-25" aria-hidden="true" tabindex="-1"></a>  <span class="at">GE =</span> <span class="st">"Genève"</span>, <span class="at">VS =</span> <span class="st">"Valais"</span>, <span class="at">OW =</span> <span class="st">"Obwalden"</span>,</span>
+<span id="cb28-26"><a href="#cb28-26" aria-hidden="true" tabindex="-1"></a>  <span class="at">UR =</span> <span class="st">"Uri"</span>, <span class="at">TI =</span> <span class="st">"Ticino"</span></span>
+<span id="cb28-27"><a href="#cb28-27" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb28-28"><a href="#cb28-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-29"><a href="#cb28-29" aria-hidden="true" tabindex="-1"></a><span class="co"># Join codes to forest_pct</span></span>
+<span id="cb28-30"><a href="#cb28-30" aria-hidden="true" tabindex="-1"></a>forest_lookup <span class="ot">&lt;-</span> <span class="fu">setNames</span>(cantons_forest<span class="sc">$</span>forest_pct, cantons_forest<span class="sc">$</span>canton)</span>
+<span id="cb28-31"><a href="#cb28-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-32"><a href="#cb28-32" aria-hidden="true" tabindex="-1"></a>colors <span class="ot">&lt;-</span> <span class="fu">colorRampPalette</span>(<span class="fu">c</span>(<span class="st">"white"</span>,<span class="st">"darkgreen"</span>))(<span class="dv">100</span>)</span>
+<span id="cb28-33"><a href="#cb28-33" aria-hidden="true" tabindex="-1"></a>pct_range <span class="ot">&lt;-</span> <span class="fu">range</span>(forest_lookup, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb28-34"><a href="#cb28-34" aria-hidden="true" tabindex="-1"></a>breaks <span class="ot">&lt;-</span> <span class="fu">seq</span>(pct_range[<span class="dv">1</span>], pct_range[<span class="dv">2</span>], <span class="at">length.out =</span> <span class="fu">length</span>(colors) <span class="sc">+</span> <span class="dv">1</span>)</span>
+<span id="cb28-35"><a href="#cb28-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-36"><a href="#cb28-36" aria-hidden="true" tabindex="-1"></a><span class="fu">layout</span>(<span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="at">nrow =</span> <span class="dv">1</span>), <span class="at">widths =</span> <span class="fu">c</span>(<span class="dv">4</span>, <span class="fl">1.2</span>))</span>
+<span id="cb28-37"><a href="#cb28-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-38"><a href="#cb28-38" aria-hidden="true" tabindex="-1"></a><span class="do">## Panel 1: your tile map</span></span>
+<span id="cb28-39"><a href="#cb28-39" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">1</span>))</span>
+<span id="cb28-40"><a href="#cb28-40" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="cn">NA</span>, <span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">0</span>, ncol_grid), <span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>, nrow_grid),</span>
+<span id="cb28-41"><a href="#cb28-41" aria-hidden="true" tabindex="-1"></a>     <span class="at">xaxt=</span><span class="st">"n"</span>, <span class="at">yaxt=</span><span class="st">"n"</span>, <span class="at">xlab=</span><span class="st">""</span>, <span class="at">ylab=</span><span class="st">""</span>, <span class="at">asp=</span><span class="dv">1</span>,</span>
+<span id="cb28-42"><a href="#cb28-42" aria-hidden="true" tabindex="-1"></a>     <span class="at">main=</span><span class="st">"Forest Coverage by Canton (Tile Map)"</span>, <span class="at">axes =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb28-43"><a href="#cb28-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-44"><a href="#cb28-44" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(r <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>nrow_grid){</span>
+<span id="cb28-45"><a href="#cb28-45" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(c <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>ncol_grid){</span>
+<span id="cb28-46"><a href="#cb28-46" aria-hidden="true" tabindex="-1"></a>    code <span class="ot">&lt;-</span> grid_codes[r,c]</span>
+<span id="cb28-47"><a href="#cb28-47" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(code <span class="sc">!=</span> <span class="st">"0"</span>){</span>
+<span id="cb28-48"><a href="#cb28-48" aria-hidden="true" tabindex="-1"></a>      pct <span class="ot">&lt;-</span> forest_lookup[code_lookup[code]]</span>
+<span id="cb28-49"><a href="#cb28-49" aria-hidden="true" tabindex="-1"></a>      col_idx <span class="ot">&lt;-</span> <span class="fu">findInterval</span>(pct, breaks, <span class="at">all.inside =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb28-50"><a href="#cb28-50" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb28-51"><a href="#cb28-51" aria-hidden="true" tabindex="-1"></a>      <span class="fu">rect</span>(c<span class="dv">-1</span>, nrow_grid<span class="sc">-</span>r, c, nrow_grid<span class="sc">-</span>r<span class="sc">+</span><span class="dv">1</span>,</span>
+<span id="cb28-52"><a href="#cb28-52" aria-hidden="true" tabindex="-1"></a>           <span class="at">col =</span> colors[col_idx],</span>
+<span id="cb28-53"><a href="#cb28-53" aria-hidden="true" tabindex="-1"></a>           <span class="at">border =</span> <span class="st">"grey40"</span>)</span>
+<span id="cb28-54"><a href="#cb28-54" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb28-55"><a href="#cb28-55" aria-hidden="true" tabindex="-1"></a>      <span class="fu">text</span>(c<span class="fl">-0.5</span>, nrow_grid<span class="sc">-</span>r<span class="fl">+0.5</span>, <span class="at">labels =</span> code, <span class="at">cex=</span><span class="fl">0.6</span>)</span>
+<span id="cb28-56"><a href="#cb28-56" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb28-57"><a href="#cb28-57" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb28-58"><a href="#cb28-58" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb28-59"><a href="#cb28-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-60"><a href="#cb28-60" aria-hidden="true" tabindex="-1"></a><span class="do">## Panel 2: vertical colorbar</span></span>
+<span id="cb28-61"><a href="#cb28-61" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">4</span>))</span>
+<span id="cb28-62"><a href="#cb28-62" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="cn">NA</span>, <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>), <span class="at">ylim =</span> pct_range,</span>
+<span id="cb28-63"><a href="#cb28-63" aria-hidden="true" tabindex="-1"></a>     <span class="at">xaxt =</span> <span class="st">"n"</span>, <span class="at">yaxt =</span> <span class="st">"n"</span>, <span class="at">xlab =</span> <span class="st">""</span>, <span class="at">ylab =</span> <span class="st">""</span>, <span class="at">bty =</span> <span class="st">"n"</span>,</span>
+<span id="cb28-64"><a href="#cb28-64" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">""</span>)</span>
+<span id="cb28-65"><a href="#cb28-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-66"><a href="#cb28-66" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="fu">seq_along</span>(colors)){</span>
+<span id="cb28-67"><a href="#cb28-67" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rect</span>(<span class="dv">0</span>, breaks[i], <span class="dv">1</span>, breaks[i<span class="sc">+</span><span class="dv">1</span>],</span>
+<span id="cb28-68"><a href="#cb28-68" aria-hidden="true" tabindex="-1"></a>       <span class="at">col =</span> colors[i], <span class="at">border =</span> <span class="cn">NA</span>)</span>
+<span id="cb28-69"><a href="#cb28-69" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb28-70"><a href="#cb28-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-71"><a href="#cb28-71" aria-hidden="true" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">4</span>, <span class="at">at =</span> <span class="fu">pretty</span>(pct_range),</span>
+<span id="cb28-72"><a href="#cb28-72" aria-hidden="true" tabindex="-1"></a>     <span class="at">labels =</span> <span class="fu">paste0</span>(<span class="fu">pretty</span>(pct_range), <span class="st">"%"</span>))</span>
+<span id="cb28-73"><a href="#cb28-73" aria-hidden="true" tabindex="-1"></a><span class="fu">mtext</span>(<span class="st">"Forest %"</span>, <span class="at">side =</span> <span class="dv">4</span>, <span class="at">line =</span> <span class="fl">2.5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="index_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="index_files/figure-html/result-tile-map-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 </section>
-<section id="the-bishop-case" class="level3">
-<h3 class="anchored" data-anchor-id="the-bishop-case">The Bishop case</h3>
-<p>A bishop on a chessboard can only move diagonally from a starting square, so I needed a way to select only the squares that touch the center at a corner, excluding those that share an edge. In DE-9IM, the fourth position of the 9-character pattern corresponds to the intersection between the boundary of the first polygon and the interior of the second polygon. By setting this position to 0, I specifically capture polygons that touch the center square only at a single point, the corners, while ignoring orthogonal neighbors. For this task, this resulted in the following string: <strong><code>F***0****</code></strong>.</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define a rook adjacency function</span></span>
-<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>st_bishop <span class="ot">&lt;-</span> <span class="cf">function</span>(x, y) <span class="fu">st_relate</span>(x, y, <span class="at">pattern =</span> <span class="st">"F***0****"</span>)</span>
-<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Select neighbor polygons and sample points (hexagonal)</span></span>
-<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>grid_bishop <span class="ot">&lt;-</span> grid_dest[grid_orig, , op <span class="ot">=</span> st_bishop] <span class="sc">|&gt;</span> </span>
-<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_sample</span>(<span class="dv">1000</span>, <span class="at">type =</span> <span class="st">"hexagonal"</span>, <span class="at">by_polygon =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the destination grid and the sampled points</span></span>
-<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
-<span id="cb39-10"><a href="#cb39-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> grid_dest, <span class="at">fill =</span> <span class="st">"green"</span>, <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
-<span id="cb39-11"><a href="#cb39-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> grid_bishop, <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">size =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
-<span id="cb39-12"><a href="#cb39-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> grid_orig, <span class="at">fill =</span> <span class="st">"purple"</span>)<span class="sc">+</span></span>
-<span id="cb39-13"><a href="#cb39-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"3x3 Chessboard Grid with Sampled Points"</span>) <span class="sc">+</span></span>
-<span id="cb39-14"><a href="#cb39-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="index_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-</section>
+<section id="comparing-execution-times" class="level2">
+<h2 class="anchored" data-anchor-id="comparing-execution-times">Comparing Execution Times</h2>
+<p>I timed all four approaches for computing forest coverage by canton and observed some interesting differences:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Method</th>
+<th>Execution Time</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>GDAL</strong></td>
+<td>523 sec</td>
+</tr>
+<tr class="even">
+<td><strong>terra</strong></td>
+<td>195 sec</td>
+</tr>
+<tr class="odd">
+<td><strong>sf</strong></td>
+<td>253 sec</td>
+</tr>
+<tr class="even">
+<td><strong>duckdb</strong></td>
+<td>0.035 sec (query only)</td>
+</tr>
+</tbody>
+</table>
+<p>My observations:</p>
+<ul>
+<li><strong>GDAL</strong> was by far the slowest, taking over 8 minutes. This might be because the workflow writes intermediate results to disk (GeoPackages) and performs all intersections in one step, which might be not memory-efficient for large layers. There is room to optimize this workflow and I need to read up on GDAL as a tool.</li>
+<li><strong>terra</strong> was much faster, completing in just over 3 minutes. This makes sense because <code>terra</code> works efficiently in memory and is optimized for large vector/raster operations.</li>
+<li><strong>sf</strong> took slightly longer than <code>terra</code>, around 4 minutes, likely due to the way <code>sf</code> handles geometries in R, compared to <code>terra</code>.</li>
+<li><strong>duckdb</strong> was extremely fast for the query itself (milliseconds), but loading the spatial data into R took several minutes, which offsets some of the raw speed advantage. DuckDB is excellent for SQL-style operations once the data is in the database.</li>
+</ul>
+<p><strong>Conclusion:</strong></p>
+<ul>
+<li>For raw execution, <strong>duckdb is fastest</strong> for querying, but the overhead of getting the data into R matters.</li>
+<li><strong>terra</strong> provides a good balance of speed and convenience for fully in-memory R workflows.</li>
+<li><strong>GDAL</strong> is slower in this setup because it relies heavily on writing/reading large GeoPackages, suggesting that the workflow could be optimized to reduce disk I/O.</li>
+</ul>
 </section>
 </section>
 
